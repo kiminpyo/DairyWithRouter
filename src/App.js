@@ -1,19 +1,17 @@
-import React, { useContext, useReducer, useRef } from 'react';
+import React, {useReducer, useRef,useEffect } from 'react';
 import './App.css';
 import {BrowserRouter, Route, Routes,} from'react-router-dom';
 import Diary from './pages/Diary';
 import Edit from './pages/Edit';
 import New from './pages/New';
 import Home from './pages/Home';
-import MyButton from './components/MyButton';
-import MyHeader from './components/MyHeader';
 
-const reducer=(action,state) => {
+
+const reducer=(state,action) => {
   let newState = [];
   switch(action.type){
-    
     case 'INIT':{
-      return  action.data
+      return  action.data;
     }
     case 'CREATE':{
       newState = [action.data, ...state];
@@ -22,29 +20,61 @@ const reducer=(action,state) => {
       };
       newState = [newItem,...state] */
       break;
-    };
-    case 'REMOVE':{
-      newState = state.filter((it) => it.id !== action.id)
-     break;
     }
     case 'EDIT':{
-      newState = state.map((it)=>
-      it.id === action.data.id ? {...action.data}: it)
+      newState = state.map((it)=> 
+        parseInt(it.id) === parseInt(action.data.id) ? {...action.data}: it
+        );
       break;
     }
+    case 'REMOVE':{
+      newState = state.filter((it) => it.id !== action.id);
+     break;
+    }
+   
     default:
-      return state;
+      return newState;
   }
 
+  localStorage.setItem('diary',JSON.stringify(newState))
+  return newState;
 }
   export const DiaryStateContext = React.createContext();
   export const DiaryDispatchContext = React.createContext();
+
+  
 function App() {
+
+  useEffect(()=>{
+
+  /* 숫자-> 문자열로 처리된 것은 다시 parseInt로 담아준다.   
+  const item1 = localStorage.getItem('item1');
+    const item2 = localStorage.getItem('item2');
+     객체로 저장된 것은 JSON.parse를 써서 다시 사용해준다,.
+    const item3= JSON.parse(localStorage.getItem('item3'));
+    console.log({item1,item2,item3}) */
+  },[])
+  console.log(new Date().getTime())
  /* 이미지 경로에 대한 설정 -*/
   const env = process.env;
   env.PUBLIC_URL = env.PUBLIC_URL || "";
-  const dataId = useRef(0);
+ 
   const [data,dispatch] = useReducer(reducer,[])
+
+  useEffect(()=>{
+    const localData = localStorage.getItem('diary');
+    if(localData){
+      const diaryList = JSON.parse(localData).sort((a,b)=> parseInt(b.id) - parseFloat(a.id));
+      dataId.current = parseInt(diaryList[0].id) + 1;
+
+      console.log(diaryList)
+      console.log(dataId)
+
+      dispatch({type: 'INIT', data: diaryList})
+    }
+  }, [])
+
+  const dataId = useRef(0);
   //create
 
 
@@ -55,7 +85,7 @@ function App() {
       date: new Date(date).getTime(),
       content,
       emotion,
-    },
+      }
   });
   dataId.current += 1;
   }
@@ -63,17 +93,21 @@ function App() {
   const onRemove = (targetId)=>{
     dispatch({
       type: 'REMOVE',
-    targetId})
+    id: targetId})
   }
   //edit
 
-  const onEdit = (targetId,date,content, emotion)=>{
-    dispatch({type:'EDIT', data:{
-      targetId,
+  const onEdit = (targetId, date, content, emotion)=>{
+    console.log(targetId, date, content,emotion)
+    dispatch({
+      type:'EDIT',
+       data:{
+      id: targetId,
       date: new Date(date).getTime(),
       content,
       emotion
-    }})
+    }
+  })
   }
   return ( 
     <DiaryStateContext.Provider value={data}>
@@ -93,7 +127,7 @@ function App() {
 
     <Route path='/' element={<Home/>} />
     <Route path='/new' element={<New/>} />
-    <Route path='/edit' element={<Edit/>} />
+    <Route path='/edit/:id' element={<Edit/>} />
     <Route path='/diary/:id' element={<Diary/>} />
     {/* id가 존재하지 않을경우 */}
    {/*  <Route path='/diary' element={<Diary/>} /> */}

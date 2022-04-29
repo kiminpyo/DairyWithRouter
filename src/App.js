@@ -63,21 +63,30 @@ function App() {
 
   useEffect(()=>{
     const localData = localStorage.getItem('diary');
-    if(localData){
-      const diaryList = JSON.parse(localData).sort((a,b)=> parseInt(b.id) - parseFloat(a.id));
-      dataId.current = parseInt(diaryList[0].id) + 1;
+    if(!localData) {
+      const diaryList = JSON.parse(localData).sort((a,b)=> parseFloat(b.id) - parseFloat(a.id));
+      return dispatch({type: 'INIT', data: diaryList})
+    }else{
+      const diaryList = JSON.parse(localData).sort((a,b)=> parseFloat(b.id) - parseFloat(a.id));
+      if(diaryList.length === 0){
+        dataId.current = 1
+      }else{
+        dataId.current = parseInt(diaryList[0].id) + 1;
+      }
+       
+  
+      
 
       console.log(diaryList)
       console.log(dataId)
-
+    
       dispatch({type: 'INIT', data: diaryList})
     }
+  
   }, [])
-
+ 
   const dataId = useRef(0);
   //create
-
-
   const onCreate =(date,content,emotion)=>{
     dispatch({type: 'CREATE' , 
       data:{

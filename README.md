@@ -1,70 +1,114 @@
-# Getting Started with Create React App
+## 프로젝트 요약
+```
+localStorage를 이용해 간단한 일기장을 작성하는 홈페이지입니다. 날짜별/행복도순 분류 및 월별 이동이 가능하고,
+ContextAPI + useReducer로 상태관리를 진행했고 UI상태 별 CRUD를 할 수 있게 적절하게 배치했습니다
+```
+### 🔧 기술 스택
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<div align=center> 
+  <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black"/> 
+  <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"/>   
+ <img src="https://img.shields.io/badge/react_router_dom-CA4245?style=for-the-badge&logo=reactrouter&logoColor=white"/> 
+</div>
 
-## Available Scripts
+### 💻 실행 방법
 
-In the project directory, you can run:
+1.  라이브러리를 설치합니다.
 
-### `npm start`
+```
+npm install
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+2.  프로젝트를 실행합니다.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+```
+ npm start
+```
+<br/>
 
-### `npm test`
+### 배포 링크
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+[배포링크 바로가기](https://kiminpyo-project-diary.web.app/)
+<br/>
 
-### `npm run build`
+## 프로젝트 설명
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 📂 디렉토리 구조
+<details>
+<summary> 구조</summary>
+<div markdown="1">
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+🗂 src
+ ┣ 📁 components
+    ┣ 📁 DiaryEditor.js
+    ┣ 📁 Diaryitem.js
+    ┣ DiaryList.js
+    ┣ EmotionItem.js
+    ┣ MyButton.js
+    ┗ MyHeader.js
+ ┣ 📂 pages
+   ┣ Diary.js
+   ┣ Edit.js
+   ┣ Home.js
+   ┗ New.js
+ ┣ 📂 reducer
+   ┗ actions.js
+ ┣ 📂 util
+   ┣ date.js
+   ┗ emotion.js
+ ┣ App.js
+ ┣ index.
+ 
+```
 
-### `npm run eject`
+</div>
+</details>
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### ⚙️ 구현기능
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+1.  다이어리 홈
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```
+- localStorage를 이용해 기존에 저장했던 정보 불러옴.
+- 월별 생성순/기분에 따라 옵션을 줘 분류.
+- 헤더쪽에 있는 화살표로 월별로 이동
+- 새로운 일기 쓰기 및 일기 수정
+```
 
-## Learn More
+2.  다이어리 상세
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```
+- localStorage를 통해 행복도와 일기 내용을 불러옴.
+- 수정 및 뒤로가기
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+3. 다이어리 수정 및 생성
+```
+- 수정을 할 경우, 기존에 생성한 데이터를 가져감.
+- 생성 시 행복도/내용/날짜 3가지를 작성.
+```
 
-### Code Splitting
+4. 다이어리 삭제
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+5. 페이지 공유
+```
+- firebase를 이용해 페이지 배포
+- openGraph를 이용해 페이지에 대한 설명 추가
+```
+---
 
-### Analyzing the Bundle Size
+### 사용한 라이브러리 및 API, CDN 등
+- react-router
+- firebase
+- localStorage
+- openGraph
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-### Making a Progressive Web App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-### Advanced Configuration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

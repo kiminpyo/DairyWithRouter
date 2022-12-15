@@ -87,7 +87,7 @@ const DiaryEditor=({isEdit, originData}) => {
     }
       />
       <div>
-        {/* 역할은 div와 똑같다 의미만 다름 */}
+
         <section>
           <h4>오늘은 언제인가요?</h4>
           <div className='input_box'>
@@ -105,7 +105,7 @@ const DiaryEditor=({isEdit, originData}) => {
              <EmotionItem
               key={it.emotion_id} {...it} 
              onClick={handleClickEmote}
-             /* 찾아봐라  */
+      
              isSelected={it.emotion_id === emotion}/>)}           
           </div>
         </section>

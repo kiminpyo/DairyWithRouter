@@ -49,8 +49,10 @@ const DiaryList = ({diaryList})=>{
            }
        }
         
-       
-       const copyList= JSON.parse(JSON.stringify(diaryList))   
+ 
+       const copyList= JSON.parse(JSON.stringify(diaryList))  
+       console.log(diaryList)
+       console.log(copyList) 
        const filteredList = 
        filter === 'all' ? copyList: copyList.filter((it)=> filterCallBack(it)) 
         

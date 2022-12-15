@@ -5,8 +5,8 @@ const EmotionItem = ({
   emotion_img, 
   emotion_descript,
   isSelected, 
-  /*함수는 전달받은 상태변화가 아니거나 usecallback으로 묶은게 아니면 기본적으로 
-  다시 렌더링이 된다  */
+
+
   onClick}) => {
   return (
     <div

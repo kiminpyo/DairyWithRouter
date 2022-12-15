@@ -5,46 +5,17 @@ import Diary from './pages/Diary';
 import Edit from './pages/Edit';
 import New from './pages/New';
 import Home from './pages/Home';
+import { reducer } from './reducer/action';
 
 
-const reducer=(state,action) => {
-  let newState = [];
-  switch(action.type){
-    case 'INIT':{
-      return  action.data;
-    }
-    case 'CREATE':{
-      newState = [action.data, ...state];
-  /*   위랑 똑같다.  const newItem ={
-        ...action.data
-      };
-      newState = [newItem,...state] */
-      break;
-    }
-    case 'EDIT':{
-      newState = state.map((it)=> 
-        parseInt(it.id) === parseInt(action.data.id) ? {...action.data}: it
-        );
-      break;
-    }
-    case 'REMOVE':{
-      newState = state.filter((it) => it.id !== action.id);
-     break;
-    }
-   
-    default:
-      return newState;
-  }
-
-  localStorage.setItem('diary',JSON.stringify(newState))
-  return newState;
-}
   export const DiaryStateContext = React.createContext();
   export const DiaryDispatchContext = React.createContext();
 
   
+  
 function App() {
 
+ const [data,dispatch] = useReducer(reducer,[])
   useEffect(()=>{
 
   /* 숫자-> 문자열로 처리된 것은 다시 parseInt로 담아준다.   
@@ -59,69 +30,63 @@ function App() {
   const env = process.env;
   env.PUBLIC_URL = env.PUBLIC_URL || "";
  
-  const [data,dispatch] = useReducer(reducer,[])
+
 
   useEffect(()=>{
     const localData = localStorage.getItem('diary');
     if(!localData) {
-      const diaryList = JSON.parse(localData).sort((a,b)=> parseFloat(b.id) - parseFloat(a.id));
+      const diaryList = '' && JSON.parse(localData).sort((a,b)=> parseFloat(b.id) - parseFloat(a.id));
       return dispatch({type: 'INIT', data: diaryList})
     }else{
-      const diaryList = JSON.parse(localData).sort((a,b)=> parseFloat(b.id) - parseFloat(a.id));
+        const diaryList = JSON.parse(localData).sort((a,b)=> parseFloat(b.id) - parseFloat(a.id));
       if(diaryList.length === 0){
         dataId.current = 1
       }else{
         dataId.current = parseInt(diaryList[0].id) + 1;
       }
-       
-  
-      
-
       console.log(diaryList)
       console.log(dataId)
-    
       dispatch({type: 'INIT', data: diaryList})
     }
-  
+    
   }, [])
  
   const dataId = useRef(0);
+  
   //create
-  const onCreate =(date,content,emotion)=>{
-    dispatch({type: 'CREATE' , 
-      data:{
-        id: dataId.current,
-      date: new Date(date).getTime(),
-      content,
-      emotion,
-      }
-  });
-  dataId.current += 1;
-  }
-  //remove
-  const onRemove = (targetId)=>{
-    dispatch({
-      type: 'REMOVE',
-    id: targetId})
-  }
-  //edit
-
-  const onEdit = (targetId, date, content, emotion)=>{
-    console.log(targetId, date, content,emotion)
-    dispatch({
-      type:'EDIT',
-       data:{
-      id: targetId,
-      date: new Date(date).getTime(),
-      content,
-      emotion
+ const onCreate =(date,content,emotion)=>{
+  dispatch({type: 'CREATE' , 
+    data:{
+      id: dataId.current,
+    date: new Date(date).getTime(),
+    content,
+    emotion,
     }
-  })
+});
+dataId.current += 1;
+}
+//remove
+const onRemove = (targetId)=>{
+  dispatch({
+    type: 'REMOVE',
+  id: targetId})
+}
+//edit
+const onEdit = (targetId, date, content, emotion)=>{
+  console.log(targetId, date, content,emotion)
+  dispatch({
+    type:'EDIT',
+     data:{
+    id: targetId,
+    
+    content,
+    emotion
   }
+})
+}
   return ( 
     <DiaryStateContext.Provider value={data}>
       <DiaryDispatchContext.Provider
-      /* 객체니까 기본 jsx문법 +객체 =>{{}} */
       value={{
         onCreate,
         onEdit,
@@ -129,21 +94,12 @@ function App() {
       }}>
     <BrowserRouter>
     <div className="App"> 
-   
-  {/* <img src={process.env.PUBLIC_URL+ `/assets/emotion1.png`} alt="" />
-  */}
     <Routes>
-
     <Route path='/' element={<Home/>} />
     <Route path='/new' element={<New/>} />
     <Route path='/edit/:id' element={<Edit/>} />
     <Route path='/diary/:id' element={<Diary/>} />
-    {/* id가 존재하지 않을경우 */}
-   {/*  <Route path='/diary' element={<Diary/>} /> */}
     </Routes>
-
-    {/* a태그는 spa가 아닌 mpa의 특징이다(외부 페이지로만 빠질때 사용 할 수 있음
-      ) (로딩창이 보임) link로 이동 */}
     </div>
     </BrowserRouter>
     </DiaryDispatchContext.Provider>

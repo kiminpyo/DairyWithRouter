@@ -48,7 +48,6 @@ const Home =() => {
 
     const decreaseMonth = () => {
       setCurDate(new Date(curDate.getFullYear(), curDate.getMonth()-1, curDate.getDate()))
-      console.log(curDate)
         }
   return (
     <div>
